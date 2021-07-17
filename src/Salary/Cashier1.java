@@ -723,7 +723,7 @@ public class Cashier1 extends javax.swing.JFrame {
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","root");
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
             insert = con1.prepareStatement("select * from inventory");
             rs = insert.executeQuery();
             
@@ -755,7 +755,7 @@ public class Cashier1 extends javax.swing.JFrame {
             
         try {
                 Class.forName("com.mysql.jdbc.Driver");
-                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","root");
+                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
                 insert = con1.prepareStatement("select * from inventory where ItemCode=?");
                 
                 insert.setString(1, name);
@@ -839,7 +839,7 @@ public class Cashier1 extends javax.swing.JFrame {
             int lastinsertid = 0;
             
             Class.forName("com.mysql.jdbc.Driver");
-            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","root");
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
             
             
             if(!cus.trim().isEmpty()){
@@ -962,7 +962,7 @@ public class Cashier1 extends javax.swing.JFrame {
             
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","root");
+                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
                 insert = con1.prepareStatement("select * from inventory where ItemCode=?");
                 
                 insert.setString(1, name);
@@ -1017,18 +1017,57 @@ public class Cashier1 extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
                     // TODO add your handling code here:
                     
-        model.removeRow(jTable1.getSelectedRow());
-        float sum = 0;
-        for(int i=0; i<jTable1.getRowCount(); i++){
-        sum = sum+Float.parseFloat(jTable1.getValueAt(i, 4).toString());
+float sum;
+        String name = txtprocode.getText();
+        
+        
+        
+        try {
+            
+            
+            // TODO add your handling code here:
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
+            insert = con1.prepareStatement("select * from inventory where ItemCode=?");
+            
+            insert.setString(1, name);
+            rs = insert.executeQuery();
+            
+            while(rs.next()){
+                
+                int currentqty;
+                    
+                    currentqty = rs.getInt("itemQty");
+                    
+                    float price = Float.parseFloat(txtprice.getText());
+                    int qtynew = Integer.parseInt(txtqty.getText());
+                    
+                    if(!(qtynew>currentqty)){
+                        
+                        model.removeRow(jTable1.getSelectedRow());
+            sum = 0;
+            for(int i=0; i<jTable1.getRowCount(); i++){
+                sum = sum+Float.parseFloat(jTable1.getValueAt(i, 4).toString());
+                txtsub.setText(String.valueOf(sum));
             }
-                       
-        txtsub.setText(String.valueOf(sum));
-        pos();
-        jButton2.setEnabled(false);
-        jButton3.setEnabled(false);
-        jButton7.setEnabled(false);
-        jTable1.clearSelection();
+                        
+                    }
+                
+                
+            }
+
+            pos();
+            
+            jButton2.setEnabled(false);
+            jButton3.setEnabled(false);
+            jButton7.setEnabled(false);
+            jTable1.clearSelection();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Cashier1.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Cashier1.class.getName()).log(Level.SEVERE, null, ex);
+        }
                     
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -1124,7 +1163,7 @@ public class Cashier1 extends javax.swing.JFrame {
         Matcher match = patt.matcher(txtqty.getText());
         if(!match.matches()){
             
-            jButton1.setEnabled(false);
+            //jButton1.setEnabled(false);
         }
        
         else{
@@ -1154,9 +1193,8 @@ public class Cashier1 extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        Customer_2 c = new Customer_2();
+        Customer c = new Customer();
         c.setVisible(true);
-        this.setVisible(false);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -1218,7 +1256,7 @@ public class Cashier1 extends javax.swing.JFrame {
 
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","root");
+                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
                 insert1 = con1.prepareStatement("select * from customer where customerPno=? AND customerStatus='active'");
 
                 insert1.setString(1, phone);

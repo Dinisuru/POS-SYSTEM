@@ -26,7 +26,7 @@ public class DBConnect {
         try {
             
             Class.forName("com.mysql.jdbc.Driver");
-            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","root");
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","12345");
             
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBConnect.class.getName()).log(Level.SEVERE, null, ex);

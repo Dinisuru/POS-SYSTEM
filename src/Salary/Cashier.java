@@ -117,7 +117,6 @@ public class Cashier extends javax.swing.JFrame {
         txtsub = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         labelpay = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
@@ -593,17 +592,6 @@ public class Cashier extends javax.swing.JFrame {
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        jButton6.setBackground(new java.awt.Color(0, 102, 204));
-        jButton6.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setText("Home");
-        jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -634,8 +622,7 @@ public class Cashier extends javax.swing.JFrame {
                                             .addComponent(jButton5)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(jLabel7)
-                                                .addGap(504, 504, 504)
-                                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGap(585, 585, 585)))
                                         .addGap(33, 33, 33)
                                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -659,9 +646,7 @@ public class Cashier extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7)
-                            .addComponent(jButton6))
+                        .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton5)
                         .addGap(37, 37, 37)
@@ -718,7 +703,7 @@ public class Cashier extends javax.swing.JFrame {
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","root");
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
             insert = con1.prepareStatement("select * from inventory");
             rs = insert.executeQuery();
             
@@ -750,7 +735,7 @@ public class Cashier extends javax.swing.JFrame {
             
         try {
                 Class.forName("com.mysql.jdbc.Driver");
-                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","root");
+                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
                 insert = con1.prepareStatement("select * from inventory where ItemCode=?");
                 
                 insert.setString(1, name);
@@ -834,7 +819,7 @@ public class Cashier extends javax.swing.JFrame {
             int lastinsertid = 0;
             
             Class.forName("com.mysql.jdbc.Driver");
-            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","root");
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
             
             
             if(!cus.trim().isEmpty()){
@@ -957,7 +942,7 @@ public class Cashier extends javax.swing.JFrame {
             
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","root");
+                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
                 insert = con1.prepareStatement("select * from inventory where ItemCode=?");
                 
                 insert.setString(1, name);
@@ -1012,18 +997,57 @@ public class Cashier extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
                     // TODO add your handling code here:
                     
-        model.removeRow(jTable1.getSelectedRow());
-        float sum = 0;
-        for(int i=0; i<jTable1.getRowCount(); i++){
-        sum = sum+Float.parseFloat(jTable1.getValueAt(i, 4).toString());
+float sum;
+        String name = txtprocode.getText();
+        
+        
+        
+        try {
+            
+            
+            // TODO add your handling code here:
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
+            insert = con1.prepareStatement("select * from inventory where ItemCode=?");
+            
+            insert.setString(1, name);
+            rs = insert.executeQuery();
+            
+            while(rs.next()){
+                
+                int currentqty;
+                    
+                    currentqty = rs.getInt("itemQty");
+                    
+                    float price = Float.parseFloat(txtprice.getText());
+                    int qtynew = Integer.parseInt(txtqty.getText());
+                    
+                    if(!(qtynew>currentqty)){
+                        
+                        model.removeRow(jTable1.getSelectedRow());
+            sum = 0;
+            for(int i=0; i<jTable1.getRowCount(); i++){
+                sum = sum+Float.parseFloat(jTable1.getValueAt(i, 4).toString());
+                txtsub.setText(String.valueOf(sum));
             }
-                       
-        txtsub.setText(String.valueOf(sum));
-        pos();
-        jButton2.setEnabled(false);
-        jButton3.setEnabled(false);
-        jButton7.setEnabled(false);
-        jTable1.clearSelection();
+                        
+                    }
+                
+                
+            }
+
+            pos();
+            
+            jButton2.setEnabled(false);
+            jButton3.setEnabled(false);
+            jButton7.setEnabled(false);
+            jTable1.clearSelection();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Cashier1.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Cashier1.class.getName()).log(Level.SEVERE, null, ex);
+        }
                     
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -1119,7 +1143,7 @@ public class Cashier extends javax.swing.JFrame {
         Matcher match = patt.matcher(txtqty.getText());
         if(!match.matches()){
             
-            jButton1.setEnabled(false);
+            //jButton1.setEnabled(false);
         }
        
         else{
@@ -1148,9 +1172,8 @@ public class Cashier extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        Customer_2 c = new Customer_2();
+        Customer c = new Customer();
         c.setVisible(true);
-        this.setVisible(false);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -1198,7 +1221,7 @@ public class Cashier extends javax.swing.JFrame {
 
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root","root");
+                con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock","root", "12345");
                 insert1 = con1.prepareStatement("select * from customer where customerPno=? AND customerStatus='active'");
 
                 insert1.setString(1, phone);
@@ -1305,14 +1328,6 @@ public class Cashier extends javax.swing.JFrame {
     private void txtpayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpayActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtpayActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-
-        AdminPage ap = new AdminPage();
-        ap.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1610,7 +1625,6 @@ public class Cashier extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

@@ -37,11 +37,11 @@ public class CustomerReportPrint extends javax.swing.JFrame {
         this.lyear = year;
         this.lmonth = month;
         
-        txtprint.setText(txtprint.getText()+"************************************************************************\n");
-        txtprint.setText(txtprint.getText()+"************************ Nimalsiri Book Shop ***************************\n");
-        txtprint.setText(txtprint.getText()+"************************ Monthly Sales Report **************************\n");
+        txtprint.setText(txtprint.getText()+"************************************************************************************\n");
+        txtprint.setText(txtprint.getText()+"************************ Nimalsiri Book Shop ***************************************\n");
+        txtprint.setText(txtprint.getText()+"************************ Monthly Loyal Customers Report ****************************\n");
         txtprint.setText(txtprint.getText()+"\n");
-        txtprint.setText(txtprint.getText()+"Customer ID"+"\t"+"Customer Name"+"\t"+"Contact Number"+"\t"+"Total Amount"+"\n");
+        txtprint.setText(txtprint.getText()+"Customer ID"+"\t"+"Customer Name"+"           "+"Contact Number"+"        "+"Total Amount"+"\n");
         
         for(int i=0;i<tableModel.getRowCount();i++){
             
@@ -51,7 +51,7 @@ public class CustomerReportPrint extends javax.swing.JFrame {
             String total = (String) tableModel.getValueAt(i, 3);
             
             
-            txtprint.setText(txtprint.getText()+cusId+"\t"+cusName+"\t"+ContactNo+"\t\t"+total+"\n");
+            txtprint.setText(txtprint.getText()+cusId+"\t"+cusName+"       "+ContactNo+"\t"+total+"\n");
             
             
             
@@ -62,9 +62,8 @@ public class CustomerReportPrint extends javax.swing.JFrame {
         
         txtprint.setText(txtprint.getText()+"Total purchase of Loyal customers for "+year+" "+month+ " Month : Rs."+ tot +"\n");
         
-         txtprint.setText(txtprint.getText()+"***************************************************************************\n");
-         txtprint.setText(txtprint.getText()+"***************************************************************************\n");
-         txtprint.setText(txtprint.getText()+"...................................Thank you............................!!!!\n");
+         txtprint.setText(txtprint.getText()+"**************************************************************************************\n");
+         txtprint.setText(txtprint.getText()+"**************************************************************************************\n");
          
          txtprint.print();
         
